@@ -1,6 +1,12 @@
 require 'sinatra'
 require 'sinatra/reloader'
 
+def write_memos(title,content)
+  File.open("asset/memos.txt","a") do |text|
+    text.puts("#{title},#{content}")
+  end
+end
+
 get '/' do
   redirect '/memos'
 end
@@ -18,6 +24,7 @@ post '/memos' do
   @content = params[:content]
   logger.info @title
   logger.info @content
+  write_memos(@title,@content)
   redirect '/memos'
 end
 
