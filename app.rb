@@ -14,6 +14,10 @@ get '/memos/new' do
 end
 
 post '/memos' do
+  @title = params[:title]
+  @content = params[:content]
+  logger.info @title
+  logger.info @content
   redirect '/memos'
 end
 
