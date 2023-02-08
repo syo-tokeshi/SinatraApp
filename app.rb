@@ -66,13 +66,13 @@ def update_memos(id, title, content)
   end
   edited_memo[1..2] = title, content
 
-  # 編集されたメモを、既存のmemosオブジェクトに反映させる
-  memos.each do |memo|
+  # 更新されたメモを、既存のmemosオブジェクトに反映させる
+  update_memos = memos.each do |memo|
     memo[1..2] = edited_memo[1..2] if memo[0].to_i == id
   end
 
-  # 編集されたメモで、memos.txtファイルを上書きする
-  overwrite_file_with_memos(memos)
+  # 更新されたメモで、memos.txtファイルを上書きする
+  overwrite_file_with_memos(update_memos)
 end
 
 get '/' do
