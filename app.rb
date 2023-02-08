@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'sinatra/reloader'
 require 'debug'
 require 'cgi'
 
 def memos_divided_per_column
-  memos = File.open("asset/memos.txt", "r") do |f|
+  memos = File.open('asset/memos.txt', 'r') do |f|
     f.read.split("\n")
   end
-  memos.map{ |a|
-    a.split(",")
-  }
+  memos.map do |a|
+    a.split(',')
+  end
 end
 
 def search_for_memos_by_id(params_id)
@@ -20,10 +22,10 @@ def search_for_memos_by_id(params_id)
 end
 
 def remake_memos_add_number(memos_with_added_id)
-  File.open("asset/memos.txt","w") do |text|
-    memos_with_added_id.each { |memo|
+  File.open('asset/memos.txt', 'w') do |text|
+    memos_with_added_id.each do |memo|
       text.puts("#{memo[0]},#{memo[1]},#{memo[2]}")
-    }
+    end
   end
 end
 
@@ -34,43 +36,39 @@ def add_id_to_memos
   remake_memos_add_number(memos)
 end
 
-def write_memos(title,content)
-  File.open("asset/memos.txt","a") do |file|
+def write_memos(title, content)
+  File.open('asset/memos.txt', 'a') do |file|
     file.puts("#{title},#{content}")
   end
 end
 
 def read_memos
-  memos = File.open("asset/memos.txt", "r") do |f|
+  memos = File.open('asset/memos.txt', 'r') do |f|
     f.read.split("\n")
   end
-  memos.map{ |a|
-    a.split(",")
-  }
+  memos.map do |a|
+    a.split(',')
+  end
 end
 
 def overwrite_file_with_memos(memos)
-  File.open("asset/memos.txt","w") do |file|
-    memos.each { |memo|
+  File.open('asset/memos.txt', 'w') do |file|
+    memos.each do |memo|
       file.puts("#{memo[0]},#{memo[1]},#{memo[2]}")
-    }
+    end
   end
 end
 
-def update_memos(id,title,content)
+def update_memos(id, title, content)
   memos = read_memos
   edited_memo = memos.each do |memo|
     break memo if memo[0].to_i == id
   end
-  edited_memo[1..2] = title,content
+  edited_memo[1..2] = title, content
 
   # 編集されたメモを、既存のmemosオブジェクトに反映させる
-  fix_memos = File.open("asset/memos.txt","r") do |file|
-     memos.each do |memo|
-      if memo[0].to_i == id
-        memo[1..2] = edited_memo[1..2]
-      end
-    end
+  memos.each do |memo|
+    memo[1..2] = edited_memo[1..2] if memo[0].to_i == id
   end
 
   # 編集されたメモで、memos.txtファイルを上書きする
@@ -93,7 +91,7 @@ end
 post '/memos' do
   @title = CGI.escapeHTML(params[:title])
   @content = CGI.escapeHTML(params[:content])
-  write_memos(@title,@content)
+  write_memos(@title, @content)
   add_id_to_memos
   redirect '/memos'
 end
@@ -114,7 +112,7 @@ patch '/memos/:id' do
   @id = params[:id].to_i
   @title = CGI.escapeHTML(params[:title])
   @content = CGI.escapeHTML(params[:content])
-  update_memos(@id,@title,@content)
+  update_memos(@id, @title, @content)
   redirect '/memos'
 end
 
@@ -123,9 +121,7 @@ delete '/memos/:id' do
   memos = read_memos
 
   memos.each do |memo|
-    if memo[0].to_i == id
-      memos.delete(memo)
-    end
+    memos.delete(memo) if memo[0].to_i == id
   end
 
   overwrite_file_with_memos(memos)
