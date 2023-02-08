@@ -19,5 +19,5 @@ bundle install
 bundle exec ruby app.rb
 ```
 
-2. ブラウザから以下のURLにアクセスします
+2. ブラウザから以下のURLにアクセスします  
 http://localhost:4567
