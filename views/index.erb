@@ -1,6 +1,7 @@
 <table class="table">
   <thead>
   <tr>
+    <th scope="col">投稿</th>
     <th scope="col">タイトル</th>
     <th scope="col">内容</th>
   </tr>
@@ -9,7 +10,8 @@
   <% @memos_divided_per_column.each do |memo| %>
     <tr>
       <td><a href="/memos/<%= memo[0] %>"><%= memo[0] %></a></td>
-      <td><a href="/memos/<%= memo[1] %>"><%= memo[1] %></a></td>
+      <td><%= memo[1] %></td>
+      <td><%= memo[2] %></td>
     </tr>
     <tr>
   <% end %>
