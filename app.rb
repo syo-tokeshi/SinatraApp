@@ -34,8 +34,41 @@ def add_id_to_memos
 end
 
 def write_memos(title,content)
-  File.open("asset/memos.txt","a") do |text|
-    text.puts("#{title},#{content}")
+  File.open("asset/memos.txt","a") do |file|
+    file.puts("#{title},#{content}")
+  end
+end
+
+def read_memos
+  memos = File.open("asset/memos.txt", "r") do |f|
+    f.read.split("\n")
+  end
+  memos.map{ |a|
+    a.split(",")
+  }
+end
+
+def update_memos(id,title,content)
+  memos = read_memos
+  edited_memo = memos.each do |memo|
+    break memo if memo[0].to_i == id
+  end
+  edited_memo[1..2] = title,content
+
+  # 編集されたメモを、既存のmemosオブジェクトに反映させる
+  fix_memos = File.open("asset/memos.txt","r") do |file|
+     memos.each do |memo|
+      if memo[0].to_i == id
+        memo[1..2] = edited_memo[1..2]
+      end
+    end
+  end
+
+  # 修正されたfix_memosでファイルに上書きする
+  File.open("asset/memos.txt","w") do |file|
+    fix_memos.each { |memo|
+      file.puts("#{memo[0]},#{memo[1]},#{memo[2]}")
+    }
   end
 end
 
@@ -44,12 +77,7 @@ get '/' do
 end
 
 get '/memos' do
-  memos = File.open("asset/memos.txt", "r") do |f|
-    f.read.split("\n")
-  end
-  @memos_divided_per_column = memos.map{ |a|
-    a.split(",")
-  }
+  @memos = read_memos
   erb :index
 end
 
@@ -72,11 +100,17 @@ get '/memos/:id' do
 end
 
 get '/memos/:id/edit' do
+  params_id = params[:id].to_i
+  @memo = search_for_memos_by_id(params_id)
   erb :edit
 end
 
 patch '/memos/:id' do
-  redirect "/memos/#{params[:id]}"
+  @id = params[:id].to_i
+  @title = params[:title]
+  @content = params[:content]
+  update_memos(@id,@title,@content)
+  redirect '/memos'
 end
 
 delete '/memos/:id' do

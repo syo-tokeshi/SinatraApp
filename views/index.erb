@@ -7,7 +7,7 @@
   </tr>
   </thead>
   <tbody>
-  <% @memos_divided_per_column.each do |memo| %>
+  <% @memos.each do |memo| %>
     <tr>
       <td><a href="/memos/<%= memo[0] %>"><%= memo[0] %></a></td>
       <td><%= memo[1] %></td>
