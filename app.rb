@@ -48,6 +48,14 @@ def read_memos
   }
 end
 
+def overwrite_file_with_memos(memos)
+  File.open("asset/memos.txt","w") do |file|
+    memos.each { |memo|
+      file.puts("#{memo[0]},#{memo[1]},#{memo[2]}")
+    }
+  end
+end
+
 def update_memos(id,title,content)
   memos = read_memos
   edited_memo = memos.each do |memo|
@@ -64,12 +72,8 @@ def update_memos(id,title,content)
     end
   end
 
-  # 修正されたfix_memosでファイルに上書きする
-  File.open("asset/memos.txt","w") do |file|
-    fix_memos.each { |memo|
-      file.puts("#{memo[0]},#{memo[1]},#{memo[2]}")
-    }
-  end
+  # 編集されたメモで、memos.txtファイルを上書きする
+  overwrite_file_with_memos(memos)
 end
 
 get '/' do
@@ -114,5 +118,15 @@ patch '/memos/:id' do
 end
 
 delete '/memos/:id' do
+  id = params[:id].to_i
+  memos = read_memos
+
+  memos.each do |memo|
+    if memo[0].to_i == id
+      memos.delete(memo)
+    end
+  end
+
+  overwrite_file_with_memos(memos)
   redirect '/memos'
 end
