@@ -129,8 +129,8 @@ delete '/memos/:id' do
   id = params[:id].to_i
   memos = read_memos
 
-  memos.each do |memo|
-    memos.delete(memo) if memo[0].to_i == id
+  memos.delete_if do |memo|
+    memo[0].to_i == id
   end
 
   overwrite_file_with_memos(memos)
