@@ -8,8 +8,8 @@ def memos_divided_per_column
   memos = File.open('asset/memos.txt', 'r') do |f|
     f.read.split("\n")
   end
-  memos.map do |a|
-    a.split(',')
+  memos.map do |memo|
+    memo.split(',')
   end
 end
 
