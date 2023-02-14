@@ -71,13 +71,13 @@ end
 
 def memo_specified_by_id(params_id)
   # put_key_for_displayメソッドに渡す値は配列でなければならない。なので一時的な配列を追加した
-  display_plain_memo = [search_for_memos_by_id(params_id)] << ["tmp"]
+  display_plain_memo = [search_for_memos_by_id(params_id)] << ['tmp']
   # 最初の要素のメモだけ渡す
   put_key_for_display(display_plain_memo).first
 end
 
 def put_key_for_display(plain_memos)
-  keys = %i(id title content)
+  keys = %i[id title content]
   plain_memos.map do |memo|
     keys.zip(memo).to_h
   end
