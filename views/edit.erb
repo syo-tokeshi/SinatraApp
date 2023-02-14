@@ -2,11 +2,11 @@
 <form action="/memos/<%= params[:id] %>" method="post">
   <div class="mb-3">
     <label for="title" class="form-label">タイトル</label>
-    <input name="title" type="text" class="form-control" id="title"  value="<%= CGI.escapeHTML(@memo[1]) %>">
+    <input name="title" type="text" class="form-control" id="title"  value="<%= CGI.escapeHTML(@memo[:title]) %>">
   </div>
   <div class="mb-3">
     <label for="content" class="form-label">内容</label>
-    <textarea name="content" class="form-control" id="content" rows="3"><%= CGI.escapeHTML(@memo[2]) %></textarea>
+    <textarea name="content" class="form-control" id="content" rows="3"><%= CGI.escapeHTML(@memo[:content]) %></textarea>
   </div>
   <input id="hidden" type="hidden" name="_method" value="patch">
   <button type="submit" class="btn btn-primary">編集を行う</button>

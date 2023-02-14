@@ -68,6 +68,13 @@ def update_memos(id, title, content)
   overwrite_file_with_memos(memos)
 end
 
+def memo_specified_by_id(params_id)
+  # put_key_for_displayメソッドに渡す値は配列でなければならない。なので一時的な配列を追加した
+  display_plain_memo = [search_for_memos_by_id(params_id)] << ["tmp"]
+  # 最初の要素のメモだけ渡す
+  put_key_for_display(display_plain_memo).first
+end
+
 def put_key_for_display(plain_memos)
   keys = %i(id title content)
   plain_memos.map do |memo|
@@ -99,13 +106,13 @@ end
 
 get '/memos/:id' do
   params_id = params[:id].to_i
-  @memo = search_for_memos_by_id(params_id)
+  @memo = memo_specified_by_id(params_id)
   erb :show
 end
 
 get '/memos/:id/edit' do
   params_id = params[:id].to_i
-  @memo = search_for_memos_by_id(params_id)
+  @memo = memo_specified_by_id(params_id)
   erb :edit
 end
 
