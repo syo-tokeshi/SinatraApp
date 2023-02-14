@@ -11,9 +11,9 @@
   <tbody>
   <% @memos.each do |memo| %>
     <tr>
-      <td><a href="/memos/<%= memo[0] %>"><%= CGI.escapeHTML(memo[0]) %></a></td>
-      <td><%= CGI.escapeHTML(memo[1]) %></td>
-      <td><%= CGI.escapeHTML(memo[2]) %></td>
+      <td><a href="/memos/<%= memo[:id] %>"><%= CGI.escapeHTML(memo[:id]) %></a></td>
+      <td><%= CGI.escapeHTML(memo[:title]) %></td>
+      <td><%= CGI.escapeHTML(memo[:content]) %></td>
     </tr>
     <tr>
   <% end %>

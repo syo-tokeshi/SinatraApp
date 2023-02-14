@@ -68,12 +68,20 @@ def update_memos(id, title, content)
   overwrite_file_with_memos(memos)
 end
 
+def put_key_for_display(plain_memos)
+  keys = %i(id title content)
+  plain_memos.map do |memo|
+    keys.zip(memo).to_h
+  end
+end
+
 get '/' do
   redirect '/memos'
 end
 
 get '/memos' do
-  @memos = read_memos
+  plain_memos = read_memos
+  @memos = put_key_for_display(plain_memos)
   erb :index
 end
 
