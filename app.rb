@@ -23,7 +23,7 @@ end
 def remake_memos_add_number(memos_with_added_id)
   File.open('asset/memos.txt', 'w') do |text|
     memos_with_added_id.each do |memo|
-      text.puts("#{memo[0]},#{memo[1]},#{memo[2]}")
+      text.puts memo.join(',')
     end
   end
 end
