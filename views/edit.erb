@@ -1,12 +1,12 @@
 <h1 class="text-center">メモの編集</h1>
 <form action="/memos/<%= params[:id] %>" method="post">
   <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">タイトル</label>
-    <input name="title" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="<%= CGI.escapeHTML(@memo[1]) %>">
+    <label for="title" class="form-label">タイトル</label>
+    <input name="title" type="text" class="form-control" id="title"  value="<%= CGI.escapeHTML(@memo[1]) %>">
   </div>
   <div class="mb-3">
-    <label for="exampleFormControlTextarea1" class="form-label">内容</label>
-    <textarea name="content" class="form-control" id="exampleFormControlTextarea1" rows="3"><%= CGI.escapeHTML(@memo[2]) %></textarea>
+    <label for="content" class="form-label">内容</label>
+    <textarea name="content" class="form-control" id="content" rows="3"><%= CGI.escapeHTML(@memo[2]) %></textarea>
   </div>
   <input id="hidden" type="hidden" name="_method" value="patch">
   <button type="submit" class="btn btn-primary">編集を行う</button>
