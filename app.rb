@@ -3,7 +3,6 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'debug'
-require 'cgi'
 
 def memos_divided_per_column
   memos = File.open('asset/memos.txt', 'r') do |f|
@@ -83,9 +82,9 @@ get '/memos/new' do
 end
 
 post '/memos' do
-  @title = CGI.escapeHTML(params[:title])
-  @content = CGI.escapeHTML(params[:content])
-  write_memos(@title, @content)
+  title = params[:title]
+  content = params[:content]
+  write_memos(title, content)
   add_id_to_memos
   redirect '/memos'
 end
@@ -104,8 +103,8 @@ end
 
 patch '/memos/:id' do
   @id = params[:id].to_i
-  @title = CGI.escapeHTML(params[:title])
-  @content = CGI.escapeHTML(params[:content])
+  @title = params[:title]
+  @content = params[:content]
   update_memos(@id, @title, @content)
   redirect '/memos'
 end
