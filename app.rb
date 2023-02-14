@@ -15,9 +15,10 @@ end
 
 def search_for_memos_by_id(params_id)
   memos = memos_divided_per_column
-  memos.each do |memo|
-    return memo if memo[0].to_i == params_id
+  selected_memo = memos.select do |memo|
+    memo[0].to_i == params_id
   end
+  selected_memo.flatten
 end
 
 def remake_memos_add_number(memos_with_added_id)
