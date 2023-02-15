@@ -2,7 +2,6 @@
 
 require 'sinatra'
 require 'sinatra/reloader'
-require 'debug'
 require 'cgi'
 require 'csv'
 
@@ -96,13 +95,10 @@ patch '/memos/:id' do
 end
 
 delete '/memos/:id' do
-  id = params[:id].to_i
+  params_id = params[:id].to_i
   memos = read_memos
-
-  memos.delete_if do |memo|
-    memo[0].to_i == id
-  end
-
+  # 受け取るidは1からはじまるため、-1するとindex検索が上手くいく
+  memos.delete_at(params_id - 1)
   overwrite_file_with_memos(memos)
   redirect '/memos'
 end
