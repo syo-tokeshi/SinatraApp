@@ -29,20 +29,16 @@ def read_memos
 end
 
 def overwrite_file_with_memos(memos)
-  File.open('asset/memos.txt', 'w') do |file|
+  File.open('asset/memos.csv', 'w') do |file|
     memos.each do |memo|
-      file.puts("#{memo[0]},#{memo[1]},#{memo[2]}")
+      file.puts(memo.join(","))
     end
   end
 end
 
 def update_memos(id, title, content)
   memos = read_memos
-  edited_memo = memos.each do |memo|
-    break memo if memo[0].to_i == id
-  end
-  edited_memo[1..2] = title, content
-
+  memos[id - 1] = title, content
   overwrite_file_with_memos(memos)
 end
 
@@ -92,10 +88,10 @@ get '/memos/:id/edit' do
 end
 
 patch '/memos/:id' do
-  @id = params[:id].to_i
-  @title = params[:title]
-  @content = params[:content]
-  update_memos(@id, @title, @content)
+  id = params[:id].to_i
+  title = params[:title]
+  content = params[:content]
+  update_memos(id, title, content)
   redirect '/memos'
 end
 
