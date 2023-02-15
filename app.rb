@@ -6,7 +6,7 @@ require 'cgi'
 require 'csv'
 
 helpers do
-  def escape_html(memo)
+  def escape(memo)
     CGI.escapeHTML(memo)
   end
 end
@@ -24,13 +24,13 @@ def write_memos(title, content)
 end
 
 def read_memos
-  CSV.read("asset/memos.csv")
+  CSV.read('asset/memos.csv')
 end
 
 def overwrite_file_with_memos(memos)
   File.open('asset/memos.csv', 'w') do |file|
     memos.each do |memo|
-      file.puts(memo.join(","))
+      file.puts(memo.join(','))
     end
   end
 end
@@ -45,7 +45,7 @@ def memo_specified_by_id(params_id)
   # put_key_for_displayメソッドに渡す値は配列でなければならない。なので一時的な配列を追加した
   display_plain_memo = [search_for_memos_by_id(params_id)] << ['tmp']
   # idと、最初の要素のメモだけ渡す
-  [params_id,put_key_for_display(display_plain_memo).first]
+  [params_id, put_key_for_display(display_plain_memo).first]
 end
 
 def put_key_for_display(plain_memos)
@@ -77,12 +77,12 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  @params_id,@memo = memo_specified_by_id(params[:id].to_i)
+  @params_id, @memo = memo_specified_by_id(params[:id].to_i)
   erb :show
 end
 
 get '/memos/:id/edit' do
-  @params_id,@memo = memo_specified_by_id(params[:id].to_i)
+  @params_id, @memo = memo_specified_by_id(params[:id].to_i)
   erb :edit
 end
 
