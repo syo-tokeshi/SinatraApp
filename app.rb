@@ -3,6 +3,15 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require 'debug'
+require 'cgi'
+require 'csv'
+
+
+helpers do
+  def escape_html(memo)
+    CGI.escapeHTML(memo)
+  end
+end
 
 def memos_divided_per_column
   memos = File.open('asset/memos.txt', 'r') do |f|
@@ -43,12 +52,7 @@ def write_memos(title, content)
 end
 
 def read_memos
-  memos = File.open('asset/memos.txt', 'r') do |f|
-    f.read.split("\n")
-  end
-  memos.map do |a|
-    a.split(',')
-  end
+  CSV.read("asset/memos.csv")
 end
 
 def overwrite_file_with_memos(memos)
