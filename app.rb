@@ -6,19 +6,9 @@ require 'debug'
 require 'cgi'
 require 'csv'
 
-
 helpers do
   def escape_html(memo)
     CGI.escapeHTML(memo)
-  end
-end
-
-def memos_divided_per_column
-  memos = File.open('asset/memos.txt', 'r') do |f|
-    f.read.split("\n")
-  end
-  memos.map do |memo|
-    memo.split(',')
   end
 end
 
@@ -30,24 +20,9 @@ def search_for_memos_by_id(params_id)
   selected_memo.flatten
 end
 
-def remake_memos_add_number(memos_with_added_id)
-  File.open('asset/memos.txt', 'w') do |text|
-    memos_with_added_id.each do |memo|
-      text.puts memo.join(',')
-    end
-  end
-end
-
-def add_id_to_memos
-  memos = memos_divided_per_column
-  memos[-1].unshift(memos[-2][0].to_i + 1) if memos.count > 1
-  memos[-1].unshift(1) if memos.count == 1
-  remake_memos_add_number(memos)
-end
-
 def write_memos(title, content)
-  File.open('asset/memos.txt', 'a') do |file|
-    file.puts("#{title},#{content}")
+  CSV.open('asset/memos.csv', 'a') do |file|
+    file << [title, content]
   end
 end
 
@@ -81,7 +56,7 @@ def memo_specified_by_id(params_id)
 end
 
 def put_key_for_display(plain_memos)
-  keys = %i[id title content]
+  keys = %i[title content]
   plain_memos.map do |memo|
     keys.zip(memo).to_h
   end
@@ -105,7 +80,6 @@ post '/memos' do
   title = params[:title]
   content = params[:content]
   write_memos(title, content)
-  add_id_to_memos
   redirect '/memos'
 end
 
