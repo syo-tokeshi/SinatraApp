@@ -49,8 +49,8 @@ end
 def memo_specified_by_id(params_id)
   # put_key_for_displayメソッドに渡す値は配列でなければならない。なので一時的な配列を追加した
   display_plain_memo = [search_for_memos_by_id(params_id)] << ['tmp']
-  # 最初の要素のメモだけ渡す
-  put_key_for_display(display_plain_memo).first
+  # idと、最初の要素のメモだけ渡す
+  [params_id,put_key_for_display(display_plain_memo).first]
 end
 
 def put_key_for_display(plain_memos)
@@ -82,14 +82,12 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  @params_id = params[:id].to_i
-  @memo = memo_specified_by_id(@params_id)
+  @params_id,@memo = memo_specified_by_id(params[:id].to_i)
   erb :show
 end
 
 get '/memos/:id/edit' do
-  params_id = params[:id].to_i
-  @memo = memo_specified_by_id(params_id)
+  @params_id,@memo = memo_specified_by_id(params[:id].to_i)
   erb :edit
 end
 
