@@ -1,14 +1,14 @@
 <h1 class="text-center mb-4">メモの詳細</h1>
 <ul class="list-group">
-  <li class="list-group-item">id : <%= CGI.escapeHTML(@memo[:id]) %></li>
+  <li class="list-group-item">id : <%= @params_id %></li>
   <li class="list-group-item">タイトル : <%= CGI.escapeHTML(@memo[:title]) %></li>
   <li class="list-group-item">内容 : <%= CGI.escapeHTML(@memo[:content]) %></li>
 </ul>
 <div class="d-flex mt-4">
-  <form action="/memos/<%= CGI.escapeHTML(@memo[:id]) %>/edit" method="get">
+  <form action="/memos/<%= @params_id %>/edit" method="get">
     <input type="submit" value="編集する" class="btn btn-primary me-5">
   </form>
-  <form action="/memos/<%= CGI.escapeHTML(@memo[:id]) %>" method="post">
+  <form action="/memos/<%= @params_id %>" method="post">
     <input type="hidden" name="_method" value="delete">
     <input type="submit" value="削除する" class="btn btn-danger">
   </form>

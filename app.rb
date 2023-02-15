@@ -13,11 +13,9 @@ helpers do
 end
 
 def search_for_memos_by_id(params_id)
-  memos = memos_divided_per_column
-  selected_memo = memos.select do |memo|
-    memo[0].to_i == params_id
-  end
-  selected_memo.flatten
+  memos = read_memos
+  # 受け取るidは1からはじまるため、-1するとindex検索が上手くいく
+  memos[params_id - 1]
 end
 
 def write_memos(title, content)
@@ -84,8 +82,8 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  params_id = params[:id].to_i
-  @memo = memo_specified_by_id(params_id)
+  @params_id = params[:id].to_i
+  @memo = memo_specified_by_id(@params_id)
   erb :show
 end
 
