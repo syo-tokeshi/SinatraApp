@@ -5,10 +5,9 @@ require 'sinatra/reloader'
 require 'cgi'
 require 'csv'
 require 'pg'
-require 'debug'
 
 before do
-  @connected_db = PG::connect(dbname: "mydb")
+  @connected_db = PG.connect(dbname: 'mydb')
 end
 
 helpers do
@@ -17,37 +16,16 @@ helpers do
   end
 end
 
-def search_for_memos_by_id(params_id)
-  memos = read_memos
-  # 受け取るidは1からはじまるため、-1するとindex検索が上手くいく
-  memos[params_id - 1]
-end
-
 def write_memos(title, content)
   @connected_db.exec_params('INSERT INTO memos(title, content) VALUES ($1, $2);', [title, content])
 end
 
 def read_memos
-  @connected_db.exec("SELECT * FROM memos" )
-end
-
-def overwrite_file_with_memos(memos)
-  File.open('asset/memos.csv', 'w') do |file|
-    memos.each do |memo|
-      file.puts(memo.join(','))
-    end
-  end
+  @connected_db.exec('SELECT * FROM memos')
 end
 
 def memo_specified_by_id(params_id)
   @connected_db.exec_params('SELECT * FROM memos WHERE id = $1;', [params_id])
-end
-
-def put_key_for_display(plain_memos)
-  keys = %i[title content]
-  plain_memos.map do |memo|
-    keys.zip(memo).to_h
-  end
 end
 
 get '/' do
