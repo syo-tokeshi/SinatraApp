@@ -8,3 +8,4 @@ gem 'sinatra-contrib'
 gem 'webrick'
 gem 'erb_lint', require: false
 gem "debug"
+gem "pg"

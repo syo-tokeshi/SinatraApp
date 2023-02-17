@@ -4,6 +4,12 @@ require 'sinatra'
 require 'sinatra/reloader'
 require 'cgi'
 require 'csv'
+require 'pg'
+require 'debug'
+
+before do
+  @connected_db = PG::connect(dbname: "mydb")
+end
 
 helpers do
   def escape(memo)
@@ -24,7 +30,7 @@ def write_memos(title, content)
 end
 
 def read_memos
-  CSV.read('asset/memos.csv')
+  @connected_db.exec("SELECT * FROM memos" )
 end
 
 def overwrite_file_with_memos(memos)
@@ -60,8 +66,7 @@ get '/' do
 end
 
 get '/memos' do
-  plain_memos = read_memos
-  @memos = put_key_for_display(plain_memos)
+  @memos = read_memos
   erb :index
 end
 
