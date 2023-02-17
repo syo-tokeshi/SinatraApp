@@ -24,9 +24,7 @@ def search_for_memos_by_id(params_id)
 end
 
 def write_memos(title, content)
-  CSV.open('asset/memos.csv', 'a') do |file|
-    file << [title, content]
-  end
+  @connected_db.exec_params('INSERT INTO memos(title, content) VALUES ($1, $2);', [title, content])
 end
 
 def read_memos
