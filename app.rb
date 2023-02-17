@@ -39,10 +39,6 @@ def overwrite_file_with_memos(memos)
   end
 end
 
-def update_memos(id, title, content)
-  @connected_db.exec_params('UPDATE memos SET title = $1, content = $2 WHERE id = $3;', [title, content, id])
-end
-
 def memo_specified_by_id(params_id)
   @connected_db.exec_params('SELECT * FROM memos WHERE id = $1;', [params_id])
 end
@@ -88,15 +84,12 @@ patch '/memos/:id' do
   id = params[:id].to_i
   title = params[:title]
   content = params[:content]
-  update_memos(id, title, content)
+  @connected_db.exec_params('UPDATE memos SET title = $1, content = $2 WHERE id = $3;', [title, content, id])
   redirect '/memos'
 end
 
 delete '/memos/:id' do
   params_id = params[:id].to_i
-  memos = read_memos
-  # 受け取るidは1からはじまるため、-1するとindex検索が上手くいく
-  memos.delete_at(params_id - 1)
-  overwrite_file_with_memos(memos)
+  @connected_db.exec_params('DELETE FROM memos WHERE id = $1;', [params_id])
   redirect '/memos'
 end
