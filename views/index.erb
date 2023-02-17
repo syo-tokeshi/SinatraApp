@@ -1,0 +1,23 @@
+<% require 'cgi' %>
+<h1 class="text-center">メモ一覧</h1>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">投稿順</th>
+    <th scope="col">タイトル</th>
+    <th scope="col">内容</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @memos.each.with_index(1) do |memo,index| %>
+    <tr>
+      <td><a href="/memos/<%= index %>"><%= index %></a></td>
+      <td><%= escape_html(memo[:title]) %></td>
+      <td><%= escape_html(memo[:content]) %></td>
+    </tr>
+    <tr>
+  <% end %>
+</table>
+<div>
+  <a class="ms-4 btn btn-primary" href="/memos/new">メモを作成</a>
+</div>
