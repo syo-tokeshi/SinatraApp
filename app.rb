@@ -7,21 +7,13 @@ require 'csv'
 require 'pg'
 
 before do
-  @connected_db = PG.connect(dbname: 'mydb')
+  @connected_db ||= PG.connect(dbname: 'mydb')
 end
 
 helpers do
   def escape(memo)
     CGI.escapeHTML(memo)
   end
-end
-
-def write_memos(title, content)
-  @connected_db.exec_params('INSERT INTO memos(title, content) VALUES ($1, $2);', [title, content])
-end
-
-def read_memos
-  @connected_db.exec('SELECT * FROM memos')
 end
 
 def memo_specified_by_id(params_id)
@@ -33,7 +25,7 @@ get '/' do
 end
 
 get '/memos' do
-  @memos = read_memos
+  @memos = @connected_db.exec('SELECT * FROM memos')
   erb :index
 end
 
@@ -44,7 +36,7 @@ end
 post '/memos' do
   title = params[:title]
   content = params[:content]
-  write_memos(title, content)
+  @connected_db.exec_params('INSERT INTO memos(title, content) VALUES ($1, $2);', [title, content])
   redirect '/memos'
 end
 
