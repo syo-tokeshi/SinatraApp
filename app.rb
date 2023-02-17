@@ -40,9 +40,7 @@ def overwrite_file_with_memos(memos)
 end
 
 def update_memos(id, title, content)
-  memos = read_memos
-  memos[id - 1] = title, content
-  overwrite_file_with_memos(memos)
+  @connected_db.exec_params('UPDATE memos SET title = $1, content = $2 WHERE id = $3;', [title, content, id])
 end
 
 def memo_specified_by_id(params_id)
