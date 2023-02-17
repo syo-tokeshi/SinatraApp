@@ -46,10 +46,7 @@ def update_memos(id, title, content)
 end
 
 def memo_specified_by_id(params_id)
-  # put_key_for_displayメソッドに渡す値は配列でなければならない。なので一時的な配列を追加した
-  display_plain_memo = [search_for_memos_by_id(params_id)] << ['tmp']
-  # idと、最初の要素のメモだけ渡す
-  [params_id, put_key_for_display(display_plain_memo).first]
+  @connected_db.exec_params('SELECT * FROM memos WHERE id = $1;', [params_id])
 end
 
 def put_key_for_display(plain_memos)
@@ -80,7 +77,7 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  @params_id, @memo = memo_specified_by_id(params[:id].to_i)
+  @memo = memo_specified_by_id(params[:id].to_i)[0]
   erb :show
 end
 
