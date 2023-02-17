@@ -82,7 +82,7 @@ get '/memos/:id' do
 end
 
 get '/memos/:id/edit' do
-  @params_id, @memo = memo_specified_by_id(params[:id].to_i)
+  @memo = memo_specified_by_id(params[:id].to_i)[0]
   erb :edit
 end
 
