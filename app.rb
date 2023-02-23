@@ -16,8 +16,9 @@ helpers do
   end
 end
 
-def memo_specified_by_id(params_id)
-  @connected_db.exec_params('SELECT * FROM memos WHERE id = $1;', [params_id])
+def find(params_id)
+  memo = @connected_db.exec_params('SELECT * FROM memos WHERE id = $1;', [params_id])
+  memo[0]
 end
 
 get '/' do
@@ -25,7 +26,7 @@ get '/' do
 end
 
 get '/memos' do
-  @memos = @connected_db.exec('SELECT * FROM memos')
+  @memos = @connected_db.exec('SELECT * FROM memos ORDER BY id DESC')
   erb :index
 end
 
@@ -41,12 +42,12 @@ post '/memos' do
 end
 
 get '/memos/:id' do
-  @memo = memo_specified_by_id(params[:id].to_i)[0]
+  @memo = find(params[:id].to_i)
   erb :show
 end
 
 get '/memos/:id/edit' do
-  @memo = memo_specified_by_id(params[:id].to_i)[0]
+  @memo = find(params[:id].to_i)
   erb :edit
 end
 
