@@ -9,11 +9,11 @@
   </tr>
   </thead>
   <tbody>
-  <% @memos.each.with_index(1) do |memo,index| %>
+  <% @memos.each do |memo| %>
     <tr>
-      <td><a href="/memos/<%= index %>"><%= index %></a></td>
-      <td><%= escape_html(memo[:title]) %></td>
-      <td><%= escape_html(memo[:content]) %></td>
+      <td><a href="/memos/<%= memo['id'] %>"><%= memo['id'] %></a></td>
+      <td><%= escape_html(memo['title']) %></td>
+      <td><%= escape_html(memo['content']) %></td>
     </tr>
     <tr>
   <% end %>

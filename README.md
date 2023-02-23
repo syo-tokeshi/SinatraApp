@@ -8,7 +8,27 @@ Sinatraを利用したメモアプリになります
 
 # 実行手順
 
-1. ローカル環境で以下のコマンドを実行
+## 1. PostgreSQLの準備(MacOS)
+```
+brew install postgresql
+
+brew services start postgresql
+
+psql postgres
+
+postgres=# create database mydb;
+
+postgres=# \q
+
+psql mydb
+
+mydb=# create table memos(id serial primary key, title varchar(255), content text);
+
+mydb=# insert into memos (title, content) values ('勉強をする','30分でもいいので');
+
+
+```
+## 2. Sinatraプログラムの準備
 ```
 git clone https://github.com/syo-tokeshi/SinatraApp/tree/develop
 

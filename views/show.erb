@@ -1,14 +1,14 @@
 <h1 class="text-center mb-4">メモの詳細</h1>
 <ul class="list-group">
-  <li class="list-group-item">id : <%= @params_id %></li>
-  <li class="list-group-item">タイトル : <%= escape(@memo[:title]) %></li>
-  <li class="list-group-item">内容 : <%= escape(@memo[:content]) %></li>
+  <li class="list-group-item">id : <%= @memo['id'] %></li>
+  <li class="list-group-item">タイトル : <%= escape(@memo['title']) %></li>
+  <li class="list-group-item">内容 : <%= escape(@memo['content']) %></li>
 </ul>
 <div class="d-flex mt-4">
-  <form action="/memos/<%= @params_id %>/edit" method="get">
+  <form action="/memos/<%= @memo['id'] %>/edit" method="get">
     <input type="submit" value="編集する" class="btn btn-primary me-5">
   </form>
-  <form action="/memos/<%= @params_id %>" method="post">
+  <form action="/memos/<%= @memo['id'] %>" method="post">
     <input type="hidden" name="_method" value="delete">
     <input type="submit" value="削除する" class="btn btn-danger">
   </form>
